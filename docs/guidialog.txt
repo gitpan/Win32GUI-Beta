@@ -1,0 +1,58 @@
+# guidialog.txt
+
+Win32::GUI::Dialog()
+
+Calling Win32::GUI::Dialog will start the message processing loop.
+This stops the Perl program flow, but activates the Win32::GUI
+objects you created, and thus the triggering of Perl events.
+Note, however, that Window and DialogBox objects are by default 
+invisible when created, so you should Show() at least a window
+before calling Dialog():
+
+$Window->Show();
+Win32::GUI::Dialog();
+
+Also note that the Dialog() phase does not return automatically,
+so you should include this event in your script:
+
+sub Window_Terminate {
+    return -1;
+}
+
+Of course, if you use more than one window, things are more complicated: 
+let's make an example: we have a program with two windows (Win1 and Win2). 
+The second one must be a "modal" window (tipically a dialog box), so the 
+first window must be disabled while the second one is active. 
+We will probably start our Dialog() phase with the first window:
+
+$Win1->Show();
+Win32::GUI::Dialog();
+
+Then we use the click of a button to call the second window; we must
+disable the first window and show the second one, so that user
+can interact with this one:
+
+sub Button_Click {
+    $Win1->Disable();
+    $Win2->Show();
+}
+
+Now, when this window is closed, control must be returned to the first
+window, and the second one must disappear:
+
+sub Win2_Terminate {
+    $Win2->Hide();
+    $Win1->Enable();
+    return 0;
+}
+
+Note the use of "return 0" because the second window must not be
+destroyed.
+
+When we close the first window instead, the program should probably
+end:
+
+sub Win1_Terminate {
+    return -1;
+}
+

@@ -1,0 +1,86 @@
+INTRODUCTION
+GENERAL CONCEPTS
+REFERENCE MANUAL
+
+
+GENERAL CONCEPTS
+
+OBJECTS
+
+The Win32::GUI package contains a series of subclasses, that represent all the 
+kind of objects that you can play with. These objects include graphical
+resources (bitmaps, fonts, etc.), controls (menus, buttons, text fields, 
+etc.), and windows and window classes. This is the hierarchy chart of the
+available objects:
+
+    - Resources:
+        Win32::GUI::Font
+        Win32::GUI::Bitmap
+        Win32::GUI::Icon
+        Win32::GUI::Cursor
+
+	- Windowing elements:
+		Win32::GUI::Window
+		Win32::GUI::Menu
+		Win32::GUI::MenuButton
+		Win32::GUI::MenuItem
+		Win32::GUI::Label
+		Win32::GUI::Button
+		Win32::GUI::Checkbox
+		Win32::GUI::RadioButton
+		Win32::GUI::Textfield
+		Win32::GUI::
+
+Keep in mind, however, that all these classes are derived from the Win32::GUI
+class, which contains a series of methods common to all classes, as well as
+non object-specific methods (functions that you can call without instantiating
+any object). For example, the method GetCursorPos() doesn't belong to any 
+class, so you call it directly as:
+	($x, $y) = Win32::GUI::GetCursorPos();
+
+Of course, you can still call it as an object's method:
+	($x, $y) = $MyWindow->GetCursorPos();
+
+
+METHODS
+
+Note that I've implemented some methods that looks much like properties.
+For example, there is a Width() method that returns or sets the width, in pixels, 
+of a window or a control. You can use it like:
+	print "I'm ", $MyWindow->Width, " pixels large";
+	$MyWindow->Width(100);
+
+The second example does effectively resize the window, setting its width to
+100 pixels. I've taken this direction as an alternative to "true" properties,
+expressed generally as keys of an associative array (see for example the OLE 
+module); the two lines above would then have been written as:
+	print "I'm $MyWindow->{Width} pixels large";
+	$MyWindow->{Width} = 100;
+
+This would probably be more efficient, but requires also harder coding; and finally,
+I personally prefer the first way of writing. Of course, I'm open to 
+suggestions/improvements/contributions on this point; as I said before, the preferred
+media for related discussions is the Perl-Win32-Porters@ActiveState.com mailing list.
+
+EVENTS
+
+Events are user-defined Perl subroutines that are called in response to certain
+actions on the graphical user interface. For example, a button has a "Click" 
+event that gets called when the user clicks on the button with the mouse.
+
+
+OPTIONSLISTS
+
+An "optionslist" is a list of options, expressed as an associative array where keys
+always begins with a dash (-). This is the same syntax as the Perl/TK interface,
+just to keep things common. An example of optionslist follows:
+
+    $Window = new Win32::GUI::Window (
+                  -name => "Window",
+                  -title => "Perl Window",
+                  -left => 150,
+                  -top => 150,
+                  -width => 400,
+                  -height => 300,
+              );
+

@@ -1,0 +1,593 @@
+
+# guifunc.txt
+
+This document lists all the available functions in the Win32::GUI module.
+
+######################################################################
+# Win32::GUI General functions
+######################################################################
+
+(hwnd, hinstance) GetPerlWindow()
+    This can be used, for example, to hide or minimize the DOS window
+    that Perl opens when called from an icon.
+
+HCLASS RegisterClassEx(%options)
+    NOTE: this is used by the "new Win32::GUI::Class" function,
+    and should not be called directly.
+    %options:
+        -extends (name of the class to extend)
+        -name (name for the class)
+        -color (HBRUSH, to be defined...)
+        -visual (0/1) NOTE: 0 is obsoleted, uses a different message loop...
+        -widget (name of widget to subclass, actually only "Button" or "Listbox")
+        -style ???
+        -icon (HICON)
+        -cursor (HCURSOR)
+        -menu (string)
+
+HWND Create(%options)
+    NOTE: this is used by the "new Win32::GUI::..." functions,
+    and should not be called directly.
+    %options common to all controls:
+        -class (Win32::GUI::Class or classname)
+        -text (string)
+        -title == -text
+        -style (DWORD, not recommended)
+        -exstyle (see -style)
+        -left
+        -top
+        -width
+        -height
+        -parent (HWND)
+        -menu (Win32::GUI::Menu or HMENU)
+        -instance (HINSTANCE, not recommended)
+        -data (LPVOID, not recommended)
+        -name (string)
+        -function (string, obsoleted)
+        -font (Win32::GUI::Font or HFONT)
+        -visible (0/1) 
+            NOTE: this is by default 0 for Win32::GUI::Window and ::DialogBox, 
+            1 for all the other controls
+        -disabled (0/1)
+        -group (0/1)
+        -tabstop (0/1)
+    %options for Win32::GUI::TextField
+        -password (0/1)
+    %options for Win32::GUI::Button, ::Checkbox and ::RadioButton
+        -align (left/center/right)
+        -valign (top/center/bottom)
+    %options for Win32::GUI::ListBox
+        -multisel (0/1/2)
+	%options for Win32::GUI::TabStrip
+		-multiline (0/1)
+		-imagelist (Win32::GUI::ImageList or HIMAGELIST)
+    %options for Win32::GUI::ListView
+        -imagelist (Win32::GUI::ImageList or HIMAGELIST)
+        -showselalways (0/1)
+    %options for Win32::GUI::TreeView
+        -lines (0/1)
+        -rootlines (0/1)
+        -buttons (0/1)
+        -imagelist (Win32::GUI::ImageList or HIMAGELIST)
+        -showselalways (0/1)
+
+void Change(handle, %options)
+    %options: see Create()
+
+DWORD Dialog()
+
+HCURSOR LoadCursorFromFile(filename)
+
+HBITMAP LoadImage(filename, iType=IMAGE_BITMAP, iX=0, iY=0, iFlags=LR_LOADFROMFILE)
+
+HCURSOR SetCursor(cursor)
+
+char * GetClassName(handle)
+
+HWND FindWindow(classname, windowname)
+
+LONG GetWindowLong(handle, index)
+
+LONG SetWindowLong(handle, index, value)
+
+HWND GetWindow(handle, command)
+
+BOOL Show(handle, command=SW_SHOWNORMAL)
+
+BOOL Hide(handle)
+
+BOOL Update(handle)
+
+BOOL InvalidateRect(handle, flag)
+BOOL InvalidateRect(handle, left, top, right, bottom, flag)
+
+BOOL DestroyWindow(handle)
+
+(@list) GetMessage(handle, min=0, max=0)
+    @list will contain the event data:
+        result
+        message number
+        wparam
+        lparam
+        time
+        x
+        y
+    ... or undef on error.
+
+(x, y) GetCursorPos()
+
+LRESULT SendMessage(handle, msg, wparam, lparam)
+
+LRESULT PostMessage(handle, msg, wparam, lparam)
+
+void PostQuitMessage(exitcode=0)
+
+BOOL SetWindowText(handle, text)
+
+char * GetWindowText(handle)
+
+char * Text(handle)
+long Text(handle, text)
+
+BOOL Move(handle, x, y)
+
+BOOL Resize(handle, x, y)
+
+(left, top, right, bottom) GetClientRect(handle)
+
+(left, top, right, bottom) GetWindowRect(handle)
+
+long Width(handle)
+BOOL Width(handle, width)
+
+long Height(handle)
+BOOL Height(handle, height)
+
+long Left(handle)
+BOOL Left(handle, left)
+
+long Top(handle)
+BOOL Top(handle, top)
+
+DWORD ScaleWidth(handle)
+
+DWORD ScaleHeight(handle)
+    
+BOOL BringWindowToTop(handle)
+
+UINT ArrangeIconicWindows(handle)
+
+HWND GetDesktopWindow()
+
+HWND GetForegroundWindow()
+
+HWND SetForegroundWindow(handle)
+
+BOOL IsZoomed(handle)
+
+BOOL IsIconic(handle)
+
+BOOL IsWindow(handle)
+
+BOOL IsVisible(handle)
+
+BOOL IsEnabled(handle)
+
+BOOL Enable(handle, flag=TRUE)
+
+BOOL Disable(handle)
+
+BOOL OpenIcon(handle)
+
+BOOL CloseWindow(handle)
+
+HWND WindowFromPoint(x,y)
+
+HWND GetTopWindow(handle)
+
+HWND GetActiveWindow()
+
+HWND GetFocus()
+
+HWND SetFocus(handle)
+
+(x, y) GetTextExtentPoint32(handle, font=NULL, string)
+
+BOOL TrackPopupMenu(handle, hmenu, x, y, flags=TPM_LEFTALIGN|TPM_TOPALIGN|TPM_LEFTBUTTON)
+
+ ######################################################################
+ # Win32::GUI::Menu functions
+ ######################################################################
+
+HMENU CreateMenu()
+
+HMENU CreatePopupMenu()
+
+BOOL SetMenu(handle, menu)
+    
+HMENU GetMenu(handle)
+
+BOOL DrawMenuBar(handle)
+
+BOOL DestroyMenu(hmenu)
+
+void InsertMenuItem(%options)
+    NOTE: this is used by the "new Win32::GUI::MenuItem" functions,
+    and should not be called directly.
+    %options:
+        -mask (int, not recommended)
+        -flag (int, not recommended)
+        -state (int, not recommended)
+        -id (int)
+        -submenu (HMENU)
+        -data (DWORD, not recommeded)
+        -text (string)
+        -item (int)
+        -separator (0/1)
+        -default (0/1)
+        -checked (0/1)
+        -enabled (0/1)
+
+long SetMenuItemInfo(handle, id, %options)
+    %options: see InsertMenuItem()
+
+BOOL Checked(handle, id)
+BOOL Checked(handle, id, checked)
+
+BOOL Enabled(handle, id)
+BOOL Enabled(handle, id, checked)
+
+BOOL DESTROY(handle)
+
+HGDIOBJ SelectObject(handle,hgdiobj)
+
+BOOL DeleteObject(hgdiobj)
+
+int GetSystemMetrics(index)
+
+
+######################################################################
+# DC-related functions (2D window graphic...)
+######################################################################
+
+int PlayEnhMetaFile(handle, filename)
+    (still in work...)
+
+int PlayWinMetaFile(handle, filename)
+    (still in work...)
+
+######################################################################
+# Common Dialog Boxes
+######################################################################
+
+char * GetOpenFileName(%options)
+    %options:
+        -owner (handle)
+        -title (string)
+        -directory (string)
+        -file (string)
+    NOTE: returns undef on error or no file choosen.
+
+COLORREF ChooseColor(%options)
+    %options:
+        -owner (handle)
+        -color (COLORREF)
+    NOTE: returns undef on error or no color choosen
+
+%list ChooseFont(%options)
+    %options:
+        -owner (handle)
+        -size (num, units unknown)
+        -height (num, units unknown)
+        -width (num, units unknown)
+        -escapement ???
+        -orientation ???
+        -weight (num, 0-900)
+        -bold (0/1)
+        -italic (0/1)
+        -underline (0/1)
+        -strikeout (0/1)
+        -charset ???
+        -outputprecision ???
+        -clipprecision ???
+        -quality ???
+        -family ???
+        -name (string, ex: "Arial")
+        -color (COLORREF)
+        -ttonly (0/1, TrueType only)
+        -fixedonly (0/1, monospaced only)
+        -effects (0/1)
+        -script (0/1)
+        -minsize (num, units unknown)
+        -maxsize (num, units unknown)
+    %list will contain data about the selected font:
+        -name
+        -height
+        -width
+        -weight
+        -size
+        -italic
+        -underline
+        -strikeout
+        -color
+    ...or undef on error or no font selected.
+
+DWORD CommDlgExtendedError()
+
+######################################################################
+# Win32::GUI::DialogBox functions
+######################################################################
+
+DWORD Dialog([handle])
+
+######################################################################
+# Win32::GUI::Textfield functions
+######################################################################
+
+LRESULT ReplaceSel(handle, string, flag=TRUE)
+
+######################################################################
+# Win32::GUI::Listbox functions
+######################################################################
+
+LRESULT AddString(handle, string)
+
+LRESULT InsertItem(handle, string, index=-1)
+
+char * GetString(handle, index)
+
+######################################################################
+# Win32::GUI::Combobox functions
+######################################################################
+
+LRESULT AddString(handle, string)
+
+LRESULT InsertItem(handle, string, index=-1)
+
+char * GetString(handle, index)
+
+######################################################################
+# Win32::GUI::TabStrip functions
+######################################################################
+
+int InsertItem(handle, %options)
+    %options:
+    -text (string)
+    -image (index from ImageList)
+	-index (int)
+
+int Select(handle, index)
+
+int SelectedItem(handle)
+
+BOOL ChangeItem(handle, index, %options)
+    %options:
+    -text (string)
+    -image (index from ImageList)
+
+int Count(handle)
+
+BOOL Reset(handle)
+
+BOOL DeleteItem(handle, index)
+
+######################################################################
+# Win32::GUI::Toolbar functions
+######################################################################
+
+LRESULT AddBitmap(handle, bitmap, numbuttons)
+
+LRESULT AddString(handle, string)
+
+LRESULT AddButtons(handle,number,(+5 parameters for each button))
+    the 5 parameters for each button are:
+        bitmap
+        id
+        state
+        style
+        string
+
+LRESULT ButtonStructSize(handle)
+
+######################################################################
+# Win32::GUI::RichEdit functions
+######################################################################
+
+MODULE = Win32::GUI     PACKAGE = Win32::GUI::RichEdit
+
+LRESULT SetCharFormat(handle, %options)
+    %options:
+    -bold (0/1)
+    -italic (0/1)
+    -underline (0/1)
+    -strikeout (0/1)
+    -color (COLORREF)
+    -autocolor (0/1)
+    -height (num, units unknown)
+    -size == -height
+    -name (string, ex: "Arial")
+    
+LRESULT SetParaFormat(handle, %options)
+    %options:
+    -numbering (0/1)
+    -bullet == -numbering
+    -align (left/center/right)
+    -offset (num)
+    -startindent (num)
+    -right (num)
+
+LRESULT ReplaceSel(handle, string, flag=TRUE)
+
+LRESULT Save(handle, filename, format=SF_RTF)
+
+LRESULT Load(handle, filename, format=SF_RTF)
+
+
+######################################################################
+# Win32::GUI::ListView functions
+######################################################################
+
+int InsertColumn(handle, %options)
+    %options:
+    -text (string)
+    -align (left/right/center)
+    -width (in pixels)
+    -item (num)
+    -index == -item
+    -subitem (index)
+
+int InsertItem(handle, %options)
+    %options:
+    -text (string)
+    -item (num)
+    -index == -item
+    -subitem (index)
+    -image (index, from the associated ImageList)
+
+int SetItem(handle, %options)
+    %options:
+    -text (string)
+    -item (num)
+    -index == -item
+    -subitem (index)
+    -image (index, from the associated ImageList)
+
+long View(handle)
+long View(handle, view)
+
+int Count(handle)
+
+BOOL DeleteItem(handle, index)
+
+HWND EditLabel(handle, index)
+
+BOOL Clear(handle)
+    
+BOOL DeleteColumn(handle, index)
+
+UINT SelectedItems(handle)
+
+void Select(handle, item)
+    
+int GetStringWidth(handle, string)
+
+int GetFirstVisible(handle)
+
+BOOL EnsureVisible(handle, index, flag=TRUE)
+
+HIMAGELIST SetImageList(handle, imagelist, type=LVSIL_NORMAL)
+
+COLORREF TextColor(handle)
+COLORREF TextColor(handle, color)
+    
+COLORREF TextBkColor(handle)
+COLORREF TextBkColor(handle, color)
+
+
+######################################################################
+# Win32::GUI::TreeView functions
+######################################################################
+
+HTREEITEM InsertItem(handle, %options)
+    %options:
+    -text (string)
+    -image (index from the associated ImageList)
+    -selectedimage (index from the asociated ImageList)
+    -parent (HREEITEM)
+    -item (HTREEITEM, insert after this one)
+    -index == -item
+
+BOOL DeleteItem(handle,item)
+
+BOOL Reset(handle)
+
+BOOL Clear(handle)
+BOOL Clear(handle, item)
+
+HIMAGELIST SetImageList(handle, imagelist, type=TVSIL_NORMAL)
+
+BOOL Expand(handle, item, flag=TVE_EXPAND)
+
+BOOL Collapse(handle, item)
+
+HTREEITEM GetChild(handle, item)
+    
+HTREEITEM GetParent(handle, item)
+
+UINT Count(handle)
+
+HTREEITEM Select(handle, item, flag=TVGN_CARET)
+
+HTREEITEM SelectedItem(handle)
+    
+UINT Indent(handle)
+UINT Indent(handle, indent)
+    
+BOOL Sort(handle, item)
+
+BOOL EnsureVisible(handle, item)
+    
+######################################################################
+# Win32::GUI::ImageList functions
+######################################################################
+
+HIMAGELIST Create(cx, cy, flags, cInitial, cGrow)
+
+int Add(handle, bitmap, bitmapMask)
+
+int Replace(handle, index, bitmap, bitmapMask)
+
+int Remove(handle, index)
+
+int Clear(handle)
+
+int Count(handle)
+
+int BackColor(handle,[color])
+
+(x, y) Size(handle)
+BOOL Size(handle, x, y)
+    
+######################################################################
+# Win32::GUI::Bitmap functions
+######################################################################
+
+@list Info(handle)
+    @list will contain:
+        width
+        height
+        bitcount
+        compression
+        size
+        x-pixels-per-meter
+        y-pixels-per-meter
+        colors-used
+        colors-important
+    ... or undef on error.
+
+BOOL DESTROY(handle)
+    
+######################################################################
+# Win32::GUI::Font functions
+######################################################################
+
+LONG Create(%options)
+    %options:
+    -height (num, units unknown :-)
+    -width  (num, see above)
+    -escapement ???
+    -orientation ???
+    -weight (num, 0-900)
+    -bold (0/1)
+    -italic (0/1)
+    -underline (0/1)
+    -strikeout (0/1)
+    -charset ???
+    -outputprecision ???
+    -clipprecision ???
+    -quality ???
+    -family ???
+    -name (string, ex: "Arial")
+
+BOOL DESTROY(handle)
+

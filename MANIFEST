@@ -1,0 +1,14 @@
+GUI.pm
+GUI.xs
+constants.c
+resource.h
+dummy.rc
+TYPEMAP
+Makefile.PL
+Makefile
+TODO
+MANIFEST
+BUGS
+README
+README.TXT
+

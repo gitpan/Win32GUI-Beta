@@ -1,0 +1,99 @@
+
+# guievent.txt
+
+Events are user-defined subroutines, called automatically while in the
+Win32::GUI::Dialog() phase when certain events happen in the user interface;
+for example, a Win32::GUI::Button object has an associated _Click() event,
+that is executed when the user clicks the button.
+The convention for associating events with object is borrowed from Visual
+Basic; the rule to define an event is:
+
+sub <objectname>_<eventname> { ... }
+
+Where <objectname> is the object's name, given with the "-name" parameter
+when creating the object, and <eventname> is the name of the event itself.
+For example:
+
+$OK = $Window->AddButton(
+    -text => "OK",
+    -name => "Button1",
+);
+
+sub Button1_Click {
+    print "You said OK!\n";
+}
+
+Particular relevance has the value returned by this event subroutines,
+because it influences the way the Dialog() routine handles the event
+AFTER calling the user-defined Perl subroutine:
+
+    1   the event is passed to the default window procedure
+        for normal processing.
+
+    0   the default window procedure is not called (usually, this will
+        cancel the event).
+
+    -1  breaks the message loop and causes Dialog() to return control
+        to Perl.
+
+Every other value is treated as 1. No explicit return value is treated
+as 1; pay attention, however, that the last function you call may return 
+a value of 0, and this could cause misfunctionality (if not worse) in
+your program. For this reason, it's always safer to explicitly end an
+event routine with a "return 1;" (or 0/-1 where required).
+
+Generic (processed for all controls):
+    _Click
+    _RightClick
+    _DblClick
+    _DblRightClick
+    _GotFocus
+    _LostFocus
+
+Win32::GUI::Window
+Win32::GUI::DialogBox
+    _Deactivate
+    _Activate
+    _Terminate
+    _Resize
+
+Win32::GUI::Menu (MenuItems)
+    _Click
+
+Win32::GUI::Button
+(Win32::GUI::Checkbox)
+(Win32::GUI::RadioButton)
+    _GotFocus
+    _LostFocus
+    _Click
+    _DblClick
+
+Win32::GUI::Listbox
+    _GotFocus
+    _LostFocus
+    _Click
+    _DblClick
+
+Win32::GUI::TextField
+    _GotFocus
+    _LostFocus
+    _Change
+
+Win32::GUI::Label
+    _Click
+    _DblClick
+
+Win32::GUI::Toolbar
+    _ButtonClick(index)
+
+Win32::GUI::ListView
+    _ItemClick(item)
+    _ColumnClick(index)
+    _KeyDown(keycode)
+
+Win32::GUI::TreeView
+    _NodeClick(node)
+    _Collapse(node)
+    _Expand(node)
+    _KeyDown(keycode)
+

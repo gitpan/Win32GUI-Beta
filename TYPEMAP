@@ -1,0 +1,136 @@
+TYPEMAP
+HWND         T_HWND
+HMENU        T_HMENU
+HCURSOR      T_HCURSOR
+HBITMAP      T_HBITMAP
+HFONT        T_HFONT
+HGDIOBJ      T_HGDIOBJ
+HIMAGELIST   T_HIMAGELIST
+HTREEITEM    T_IV
+LONG         T_IV
+LPCTSTR      T_PV
+LPTSTR       T_PV
+DWORD        T_IV
+UINT         T_IV
+BOOL         T_IV
+WPARAM       T_IV
+LPARAM       T_IV
+LRESULT      T_IV
+HINSTANCE    T_IV
+COLORREF     T_IV
+LPCSTR       T_PV
+HDC          T_IV
+HENHMETAFILE T_IV
+
+################################################################################
+INPUT
+T_HWND
+    if(SvROK($arg)) {
+        if(strncmp(HvNAME(SvSTASH((SV*)SvRV($arg))), \"Win32::GUI\", 10) == 0) {
+            SV** tmphandle = hv_fetch((HV*)SvRV($arg), \"handle\", 6, 0);
+            if(tmphandle != NULL)
+                $var = ($type) SvIV(*tmphandle);
+            else
+                $var = NULL;
+        } else
+            $var = NULL;
+    } else {
+        $var = ($type) SvIV($arg);
+    }
+
+T_HMENU
+    if(SvROK($arg)) {
+        if(strncmp(HvNAME(SvSTASH((SV*)SvRV($arg))), \"Win32::GUI::Menu\", 16) == 0) {
+            SV** tmphandle = hv_fetch((HV*)SvRV($arg), \"handle\", 6, 0);
+            if(tmphandle != NULL)
+                $var = ($type) SvIV(*tmphandle);
+            else
+                $var = NULL;
+        } else
+            $var = NULL;
+    } else
+        $var = ($type) SvIV($arg)
+
+T_HCURSOR
+    if(SvROK($arg)) {
+        if(sv_isa($arg, \"Win32::GUI::Cursor\")) {
+            SV** tmphandle = hv_fetch((HV*)SvRV($arg), \"handle\", 6, 0);
+            if(tmphandle != NULL)
+                $var = ($type) SvIV(*tmphandle);
+            else
+                $var = NULL;
+        } else
+            $var = NULL;
+    } else
+        $var = ($type) SvIV($arg)
+
+T_HBITMAP
+    if(SvROK($arg)) {
+        if(sv_isa($arg, \"Win32::GUI::Bitmap\")) {
+            SV** tmphandle = hv_fetch((HV*)SvRV($arg), \"handle\", 6, 0);
+            if(tmphandle != NULL)
+                $var = ($type) SvIV(*tmphandle);
+            else
+                $var = NULL;
+        } else
+            $var = NULL;
+    } else
+        $var = ($type) SvIV($arg)
+
+T_HFONT
+    if(SvROK($arg)) {
+        if(sv_isa($arg, \"Win32::GUI::Font\")) {
+            SV** tmphandle = hv_fetch((HV*)SvRV($arg), \"handle\", 6, 0);
+            if(tmphandle != NULL)
+                $var = ($type) SvIV(*tmphandle);
+            else
+                $var = NULL;
+        } else
+            $var = NULL;
+    } else
+        $var = ($type) SvIV($arg)
+
+T_HGDIOBJ
+    if(SvROK($arg)) {
+        if(strncmp(HvNAME(SvSTASH((SV*)SvRV($arg))), \"Win32::GUI\", 10) == 0) {
+            SV** tmphandle = hv_fetch((HV*)SvRV($arg), \"handle\", 6, 0);
+            if(tmphandle != NULL)
+                $var = ($type) SvIV(*tmphandle);
+            else
+                $var = NULL;
+        } else
+            $var = NULL;
+    } else
+        $var = ($type) SvIV($arg)
+
+T_HIMAGELIST
+    if(SvROK($arg)) {
+        if(sv_isa($arg, \"Win32::GUI::ImageList\")) {
+            SV** tmphandle = hv_fetch((HV*)SvRV($arg), \"handle\", 6, 0);
+            if(tmphandle != NULL)
+                $var = ($type) SvIV(*tmphandle);
+            else
+                $var = NULL;
+        } else
+            $var = NULL;
+    } else
+        $var = ($type) SvIV($arg)
+
+
+################################################################################
+OUTPUT
+T_HWND
+    sv_setiv($arg, (IV) $var);
+T_HMENU
+    sv_setiv($arg, (IV) $var);
+T_HCURSOR
+    sv_setiv($arg, (IV) $var);
+T_HBITMAP
+    sv_setiv($arg, (IV) $var);
+T_HBITMAP
+    sv_setiv($arg, (IV) $var);    
+T_HGDIOBJ
+    sv_setiv($arg, (IV) $var);
+T_HIMAGELIST
+    sv_setiv($arg, (IV) $var);
+    

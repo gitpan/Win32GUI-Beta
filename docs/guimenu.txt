@@ -1,0 +1,41 @@
+
+# guimenu.txt
+
+You can create menus in Win32::GUI two ways: the obsolete one and
+the smarter one.
+
+The obsolete one looks like this:
+==================================================================
+$M = new Win32::GUI::Menu();
+
+$M_File = $M->AddMenuButton(
+    -id => 1,
+    -text => "&File",
+    -name => "MenuFile",
+);
+
+$M_FileExit = $M_File->AddMenuItem(
+    -id => 2,
+    -text => "E&xit",
+    -name => "MenuFileExit",
+);
+==================================================================
+
+Then, you can assign a menu to a window when you create it:
+==================================================================
+$W = new Win32::GUI::Window(
+    -menu => $M,
+    -title => "Test Window",
+    # etc...
+);
+==================================================================
+
+The smarter way, instead, looks like this:
+==================================================================
+$M = Win32::GUI::MakeMenu(
+    "&File"     => "MenuFile",
+    " > E&xit"  => "MenuFileExit",
+);
+==================================================================
+
+Smarter, isn't it? :-)
